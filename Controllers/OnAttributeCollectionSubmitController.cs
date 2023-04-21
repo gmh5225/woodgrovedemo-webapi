@@ -1,5 +1,8 @@
+using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Mvc;
+using woodgroveapi.Models.Request;
 using woodgroveapi.Models.Response;
 
 namespace woodgroveapi.Controllers;
@@ -21,10 +24,11 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         _logger.LogInformation("C# HTTP trigger function processed a request.");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
 
-        JsonNode data = JsonNode.Parse(requestBody);
-    
+        var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
+        RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
+
         // Read the correlation ID from the Azure AD  request    
-        string correlationId = data!["data"]!["authenticationContext"]!["correlationId"]!.GetValue<string>();;
+        string correlationId = data.data.authenticationContext.correlationId; ;
 
         // Claims to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);

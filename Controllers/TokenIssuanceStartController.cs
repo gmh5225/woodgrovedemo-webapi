@@ -33,7 +33,7 @@ public class TokenIssuanceStartController : ControllerBase
         ResponseData r = new ResponseData(ResponseType.OnTokenIssuanceStartResponseData);
         r.AddAction(EventType.ProvideClaimsForToken);
         r.data.actions[0].claims.CorrelationId = correlationId;
-        r.data.actions[0].claims.ApiVersion = "1.0.0";
+        r.data.actions[0].claims.ApiVersion = "1.0.1";
         Random random = new Random();
         r.data.actions[0].claims.LoyaltyNumber = random.Next(123467, 999989).ToString();
         r.data.actions[0].claims.CustomRoles.Add("Writer");
