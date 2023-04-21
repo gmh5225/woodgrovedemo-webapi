@@ -31,7 +31,7 @@ public class TokenIssuanceStartController : ControllerBase
 
         // Claims to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnTokenIssuanceStartResponseData);
-        r.AddAction(EventType.ProvideClaimsForToken);
+        r.AddAction(ActionType.ProvideClaimsForToken);
         r.data.actions[0].claims.CorrelationId = correlationId;
         r.data.actions[0].claims.ApiVersion = "1.0.2";
         Random random = new Random();

@@ -30,14 +30,10 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         // Read the correlation ID from the Azure AD  request    
         string correlationId = data.data.authenticationContext.correlationId; ;
 
-        // Claims to return to Azure AD
+        // Errors to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);
-        r.data.actions[0].claims.CorrelationId = correlationId;
-        r.data.actions[0].claims.ApiVersion = "1.0.0";
-        Random random = new Random();
-        r.data.actions[0].claims.LoyaltyNumber = random.Next(123467, 999989).ToString();
-        r.data.actions[0].claims.CustomRoles.Add("Writer");
-        r.data.actions[0].claims.CustomRoles.Add("Editor");
+        r.AddAction(ActionType.ShowValidationError);
+        r.data.actions[0].attributeErrors.Add(new AttributeError("city", "My error"));
         return r;
     }
 }

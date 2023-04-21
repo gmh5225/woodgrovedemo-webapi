@@ -38,14 +38,19 @@ namespace woodgroveapi.Models.Response
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Inputs inputs { get; set; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public List<AttributeError> attributeErrors { get; set; }
+
         public Action(string actionType)
         {
             odatatype = actionType;
 
-            if (actionType == EventType.ProvideClaimsForToken)
+            if (actionType == ActionType.ProvideClaimsForToken)
                 claims = new Claims();
-            else if (actionType == EventType.AttributeCollectionStart.SetPrefillValues)
+            else if (actionType == ActionType.AttributeCollectionStart.SetPrefillValues)
                 inputs = new Inputs();
+            else if (actionType == ActionType.ShowValidationError)
+                attributeErrors = new List<AttributeError>();
         }
     }
 
@@ -72,6 +77,18 @@ namespace woodgroveapi.Models.Response
         public string jobTitle { get; set; }
     }
 
+    public class AttributeError
+    {
+        public string name { get; set; }
+        public string value { get; set; }
+
+        public AttributeError(string Name, string Value)
+        {
+            this.name = Name;
+            this.value = Value;
+        }
+    }
+
     public class ResponseType
     {
         public const string OnTokenIssuanceStartResponseData = "microsoft.graph.onTokenIssuanceStartResponseData";
@@ -79,9 +96,10 @@ namespace woodgroveapi.Models.Response
         public const string OnAttributeCollectionSubmitResponseData = "microsoft.graph.onAttributeCollectionSubmitResponseData";
     }
 
-    public class EventType
+    public class ActionType
     {
         public const string ProvideClaimsForToken = "microsoft.graph.provideClaimsForToken";
+        public const string ShowValidationError = "microsoft.graphShowValidationError";
 
         public class AttributeCollectionStart
         {
