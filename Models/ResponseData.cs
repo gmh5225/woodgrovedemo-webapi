@@ -86,7 +86,7 @@ namespace woodgroveapi.Models.Response
         public class AttributeCollectionStart
         {
             public const string ContinueWithDefaultBehavior = "microsoft.graph.attributeCollectionStart.continueWithDefaultBehavior";
-            public const string SetPrefillValues = "microsoft.graph.attributeCollectionSubmit.setPrefillValues";
+            public const string SetPrefillValues = "microsoft.graph.attributeCollectionStart.setPrefillValues";
             public const string ShowBlockPage = "microsoft.graph.attributeCollectionStart.showBlockPage";
         }
 
