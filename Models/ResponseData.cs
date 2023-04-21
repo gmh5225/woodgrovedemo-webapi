@@ -7,9 +7,16 @@ namespace woodgroveapi.Models.Response
     {
         [JsonPropertyName("data")]
         public Data data { get; set; }
-        public ResponseData()
+        public ResponseData(string dataType)
         {
             data = new Data();
+            data.odatatype = dataType;
+        }
+
+        public void AddAction(string actionType)
+        {
+            this.data.actions = new List<Action>();
+            this.data.actions.Add(new Action(actionType));
         }
     }
 
@@ -18,23 +25,27 @@ namespace woodgroveapi.Models.Response
         [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
         public List<Action> actions { get; set; }
-        public Data()
-        {
-            odatatype = "microsoft.graph.onTokenIssuanceStartResponseData";
-            actions = new List<Action>();
-            actions.Add(new Action());
-        }
     }
 
     public class Action
     {
         [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Claims claims { get; set; }
-        public Action()
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public Inputs inputs { get; set; }
+
+        public Action(string actionType)
         {
-            odatatype = "microsoft.graph.provideClaimsForToken";
-            claims = new Claims();
+            odatatype = actionType;
+
+            if (actionType == EventType.ProvideClaimsForToken)
+                claims = new Claims();
+            else if (actionType == EventType.AttributeCollectionStart.SetPrefillValues)
+                inputs = new Inputs();
         }
     }
 
@@ -53,6 +64,37 @@ namespace woodgroveapi.Models.Response
         public Claims()
         {
             CustomRoles = new List<string>();
+        }
+    }
+
+    public class Inputs
+    {
+        public string jobTitle { get; set; }
+    }
+
+    public class ResponseType
+    {
+        public const string OnTokenIssuanceStartResponseData = "microsoft.graph.onTokenIssuanceStartResponseData";
+        public const string OnAttributeCollectionStartResponseData = "microsoft.graph.onAttributeCollectionStartResponseData";
+        public const string OnAttributeCollectionSubmitResponseData = "microsoft.graph.onAttributeCollectionSubmitResponseData";
+    }
+
+    public class EventType
+    {
+        public const string ProvideClaimsForToken = "microsoft.graph.provideClaimsForToken";
+
+        public class AttributeCollectionStart
+        {
+            public const string ContinueWithDefaultBehavior = "microsoft.graph.attributeCollectionStart.continueWithDefaultBehavior";
+            public const string SetPrefillValues = "microsoft.graph.attributeCollectionSubmit.setPrefillValues";
+            public const string ShowBlockPage = "microsoft.graph.attributeCollectionStart.showBlockPage";
+        }
+
+        public class AttributeCollectionSubmit
+        {
+            public const string ContinueWithDefaultBehavior = "microsoft.graph.attributeCollectionSubmit.continueWithDefaultBehavior";
+            public const string ModifyAttributeValues = "microsoft.graph.attributeCollectionSubmit.modifyAttributeValues";
+            public const string ShowBlockPage = "microsoft.graph.attributeCollectionSubmit.showBlockPage";
         }
     }
 }

@@ -27,7 +27,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         string correlationId = data!["data"]!["authenticationContext"]!["correlationId"]!.GetValue<string>();;
 
         // Claims to return to Azure AD
-        ResponseData r = new ResponseData();
+        ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);
         r.data.actions[0].claims.CorrelationId = correlationId;
         r.data.actions[0].claims.ApiVersion = "1.0.0";
         Random random = new Random();

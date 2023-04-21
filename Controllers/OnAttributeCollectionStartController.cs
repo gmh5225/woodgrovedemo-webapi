@@ -27,13 +27,9 @@ public class OnAttributeCollectionStartController : ControllerBase
         string correlationId = data!["data"]!["authenticationContext"]!["correlationId"]!.GetValue<string>();;
 
         // Claims to return to Azure AD
-        ResponseData r = new ResponseData();
-        r.data.actions[0].claims.CorrelationId = correlationId;
-        r.data.actions[0].claims.ApiVersion = "1.0.0";
-        Random random = new Random();
-        r.data.actions[0].claims.LoyaltyNumber = random.Next(123467, 999989).ToString();
-        r.data.actions[0].claims.CustomRoles.Add("Writer");
-        r.data.actions[0].claims.CustomRoles.Add("Editor");
+        ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionStartResponseData);
+        r.AddAction(EventType.AttributeCollectionStart.SetPrefillValues);
+        r.data.actions[0].inputs.jobTitle = "This is my test";
         return r;
     }
 }
