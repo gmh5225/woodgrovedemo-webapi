@@ -28,7 +28,7 @@ public class OnAttributeCollectionStartController : ControllerBase
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
 
         // Read the correlation ID from the Azure AD  request    
-        string correlationId = data.data.authenticationContext.correlationId; ;
+        //string correlationId = data.data.authenticationContext.correlationId; ;
 
         // Claims to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionStartResponseData);
