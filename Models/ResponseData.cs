@@ -50,7 +50,7 @@ namespace woodgroveapi.Models.Response
 
             if (actionType == ActionType.ProvideClaimsForToken)
                 claims = new Claims();
-            else if (actionType == ActionType.AttributeCollectionStart.SetPrefillValues)
+            else if (actionType == ActionType.SetPrefillValues)
                 inputs = new Inputs();
             else if (actionType == ActionType.ShowValidationError)
                 attributeErrors = new List<AttributeError>();
@@ -103,19 +103,10 @@ namespace woodgroveapi.Models.Response
     {
         public const string ProvideClaimsForToken = "microsoft.graph.provideClaimsForToken";
         public const string ShowValidationError = "microsoft.graph.ShowValidationError";
+        public const string ContinueWithDefaultBehavior = "microsoft.graph.continueWithDefaultBehavior";
+        public const string ModifyAttributeValues = "microsoft.graph.modifyAttributeValues";
+        public const string ShowBlockPage = "microsoft.graph.showBlockPage";
+        public const string SetPrefillValues = "microsoft.graph.setPrefillValues";
 
-        public class AttributeCollectionStart
-        {
-            public const string ContinueWithDefaultBehavior = "microsoft.graph.attributeCollectionStart.continueWithDefaultBehavior";
-            public const string SetPrefillValues = "microsoft.graph.attributeCollectionStart.setPrefillValues";
-            public const string ShowBlockPage = "microsoft.graph.attributeCollectionStart.showBlockPage";
-        }
-
-        public class AttributeCollectionSubmit
-        {
-            public const string ContinueWithDefaultBehavior = "microsoft.graph.continueWithDefaultBehavior";
-            public const string ModifyAttributeValues = "microsoft.graph.attributeCollectionSubmit.modifyAttributeValues";
-            public const string ShowBlockPage = "microsoft.graph.attributeCollectionSubmit.showBlockPage";
-        }
     }
 }

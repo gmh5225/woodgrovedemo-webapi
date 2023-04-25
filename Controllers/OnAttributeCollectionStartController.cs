@@ -33,7 +33,7 @@ public class OnAttributeCollectionStartController : ControllerBase
 
         // Claims to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionStartResponseData);
-        r.AddAction(ActionType.AttributeCollectionStart.SetPrefillValues);
+        r.AddAction(ActionType.SetPrefillValues);
         r.data.actions[0].inputs.jobTitle = "This is my test";
         return r;
     }

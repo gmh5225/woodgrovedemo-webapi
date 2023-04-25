@@ -43,8 +43,16 @@ public class OnAttributeCollectionSubmitController : ControllerBase
             data.data.userSignUpInfo.builtInAttributes.country == null ||
             data.data.userSignUpInfo.builtInAttributes.city == null)
         {
-            r.AddAction(ActionType.AttributeCollectionSubmit.ShowBlockPage);
+            r.AddAction(ActionType.ShowBlockPage);
             r.data.actions[0].message = "Can't find the country and/or city attributes.";
+            return r;
+        }
+
+        // Demonstrates the use of block response
+        if (data.data.userSignUpInfo.builtInAttributes.city.ToLower() == "block")
+        {
+            r.AddAction(ActionType.ShowBlockPage);
+            r.data.actions[0].message = "You can't create an account with 'block' city.";
             return r;
         }
 
@@ -70,7 +78,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         else
         {
             // No issues have been identified, proceed to create the account
-            r.AddAction(ActionType.AttributeCollectionSubmit.ContinueWithDefaultBehavior);
+            r.AddAction(ActionType.ContinueWithDefaultBehavior);
         }
 
         return r;
