@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging.AzureAppServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add Azure stream log service
 builder.Logging.AddAzureWebAppDiagnostics();
 builder.Services.Configure<AzureFileLoggerOptions>(options =>
 {
@@ -12,16 +12,7 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
 });
 builder.Logging.AddFilter((provider, category, logLevel) =>
 {
-    if (provider.Contains("woodgroveapi")
-        && category.Contains("Controller")
-        && logLevel >= LogLevel.Information)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return provider.Contains("woodgroveapi");
 });
 
 builder.Services.AddControllers();
