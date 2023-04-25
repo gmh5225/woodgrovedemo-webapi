@@ -23,7 +23,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     {
         _logger.LogInformation("*********** OnAttributeCollectionSubmitController ***********");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-        //_logger.LogInformation(requestBody);
+        _logger.LogInformation(requestBody);
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
@@ -36,7 +36,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);
         r.AddAction(ActionType.ShowValidationError);
         r.data.actions[0].message = "Please fix the following issues to proceed.";
-        r.data.actions[0].attributeErrors.Add(new AttributeError("city", "My error"));
+        r.data.actions[0].attributeErrors.Add(new AttributeError("city", "We don't operate in this country"));
         return r;
     }
 }

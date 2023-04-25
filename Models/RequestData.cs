@@ -74,6 +74,8 @@ namespace woodgroveapi.Models.Request
         public string surname { get; set; }
         public string userPrincipalName { get; set; }
         public string userType { get; set; }
+        public string country { get; set; }
+        public string city { get; set; }
     }
 
     // Sign-up classes
