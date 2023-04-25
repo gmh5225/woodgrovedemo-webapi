@@ -23,11 +23,12 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     {
         _logger.LogInformation("*********** OnAttributeCollectionSubmitController ***********");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
+        _logger.LogInformation(requestBody);
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
-        _logger.LogInformation(data.ToString());
-        
+
+
         // Read the correlation ID from the Azure AD  request    
         //string correlationId = data.data.authenticationContext.correlationId; ;
 

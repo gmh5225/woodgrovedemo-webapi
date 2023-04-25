@@ -20,8 +20,9 @@ public class TokenIssuanceStartController : ControllerBase
     [HttpPost(Name = "TokenIssuanceStart")]
     public async Task<ResponseData> PostAsync()
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        _logger.LogInformation("*********** TokenIssuanceStart ***********");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
+        _logger.LogInformation(requestBody);
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
