@@ -102,7 +102,7 @@ namespace woodgroveapi.Models.Response
     public class ActionType
     {
         public const string ProvideClaimsForToken = "microsoft.graph.provideClaimsForToken";
-        public const string ShowValidationError = "microsoft.graphShowValidationError";
+        public const string ShowValidationError = "microsoft.graph.ShowValidationError";
 
         public class AttributeCollectionStart
         {
