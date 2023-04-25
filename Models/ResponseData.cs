@@ -113,7 +113,7 @@ namespace woodgroveapi.Models.Response
 
         public class AttributeCollectionSubmit
         {
-            public const string ContinueWithDefaultBehavior = "microsoft.graph.attributeCollectionSubmit.continueWithDefaultBehavior";
+            public const string ContinueWithDefaultBehavior = "microsoft.graph.continueWithDefaultBehavior";
             public const string ModifyAttributeValues = "microsoft.graph.attributeCollectionSubmit.modifyAttributeValues";
             public const string ShowBlockPage = "microsoft.graph.attributeCollectionSubmit.showBlockPage";
         }
