@@ -23,20 +23,56 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     {
         _logger.LogInformation("*********** OnAttributeCollectionSubmitController ***********");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-        _logger.LogInformation(requestBody);
+        //_logger.LogInformation(requestBody);
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
 
+        // List of countries and cities where Woodgrove operates
+        Dictionary<string, string> CountriesList = new Dictionary<string, string>();
+        CountriesList.Add("au", " Sydney, Brisbane, Melbourne");
+        CountriesList.Add("es", " Madrid, Barcelona, Seville");
+        CountriesList.Add("us", " New York, Chicago, Boston, Seattle");
 
-        // Read the correlation ID from the Azure AD  request    
-        //string correlationId = data.data.authenticationContext.correlationId; ;
-
-        // Errors to return to Azure AD
+        // Message object to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);
-        r.AddAction(ActionType.ShowValidationError);
-        r.data.actions[0].message = "Please fix the following issues to proceed.";
-        r.data.actions[0].attributeErrors.Add(new AttributeError("city", "We don't operate in this country"));
+
+        // Check the input attributes and return a generic error message
+        if (data.data.userSignUpInfo == null ||
+            data.data.userSignUpInfo.attributes == null ||
+            data.data.userSignUpInfo.attributes.country == null ||
+            data.data.userSignUpInfo.attributes.city == null)
+        {
+            r.AddAction(ActionType.AttributeCollectionSubmit.ShowBlockPage);
+            r.data.actions[0].message = "Can't find the country and/or city attributes.";
+            return r;
+        }
+
+        // Check the country name in on the supported list
+        if (!CountriesList.ContainsKey(data.data.userSignUpInfo.attributes.country.value))
+        {
+            r.AddAction(ActionType.ShowValidationError);
+            r.data.actions[0].message = "Please fix the following issues to proceed.";
+            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{data.data.userSignUpInfo.attributes.country.value}'"));
+            return r;
+        }
+
+        // Get the countries' cities
+        string cities = CountriesList[data.data.userSignUpInfo.attributes.country.value];
+
+        // Check if the city provided by user in the supported list
+        if (!(cities + ",").ToLower().Contains($" {data.data.userSignUpInfo.attributes.city.value.ToLower()},"))
+        {
+            r.AddAction(ActionType.ShowValidationError);
+            r.data.actions[0].message = "Please fix the following issues to proceed.";
+            r.data.actions[0].attributeErrors.Add(new AttributeError("city", $"We don't operate in this city. Please select one of the following:{cities}"));
+        }
+        else
+        {
+            // No issues have been identified, proceed to create the account
+            r.AddAction(ActionType.AttributeCollectionSubmit.ContinueWithDefaultBehavior);
+        }
+
         return r;
     }
 }
