@@ -23,7 +23,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     {
         _logger.LogInformation("*********** OnAttributeCollectionSubmitController ***********");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-        //_logger.LogInformation(requestBody);
+        _logger.LogInformation(requestBody);
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
