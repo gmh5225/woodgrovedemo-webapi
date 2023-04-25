@@ -21,12 +21,13 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     [HttpPost(Name = "OnAttributeCollectionSubmit")]
     public async Task<ResponseData> PostAsync()
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        _logger.LogInformation("*********** OnAttributeCollectionSubmitController ***********");
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
         RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
-
+        _logger.LogInformation(data.ToString());
+        
         // Read the correlation ID from the Azure AD  request    
         //string correlationId = data.data.authenticationContext.correlationId; ;
 
