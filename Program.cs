@@ -10,6 +10,19 @@ builder.Services.Configure<AzureFileLoggerOptions>(options =>
     options.FileSizeLimit = 50 * 1024;
     options.RetainedFileCountLimit = 5;
 });
+builder.Logging.AddFilter((provider, category, logLevel) =>
+{
+    if (provider.Contains("woodgroveapi")
+        && category.Contains("Controller")
+        && logLevel >= LogLevel.Information)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
