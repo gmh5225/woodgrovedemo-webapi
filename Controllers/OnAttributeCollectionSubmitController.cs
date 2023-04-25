@@ -35,6 +35,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         // Errors to return to Azure AD
         ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);
         r.AddAction(ActionType.ShowValidationError);
+        r.data.actions[0].message = "Please fix the following issues to proceed.";
         r.data.actions[0].attributeErrors.Add(new AttributeError("city", "My error"));
         return r;
     }

@@ -39,6 +39,9 @@ namespace woodgroveapi.Models.Response
         public Inputs inputs { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string message { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<AttributeError> attributeErrors { get; set; }
 
         public Action(string actionType)
