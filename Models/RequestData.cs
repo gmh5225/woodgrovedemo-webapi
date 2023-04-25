@@ -86,23 +86,23 @@ namespace woodgroveapi.Models.Request
 
     public class BuiltInAttributes
     {
-        public Country country { get; set; }
-        public City city { get; set; }
+        public string country { get; set; }
+        public string city { get; set; }
     }
 
-    public class Country
-    {
-        [JsonPropertyName("@odata.type")]
-        public string odatatype { get; set; }
-        public string value { get; set; }
-        public string attributeType { get; set; }
-    }
+    // public class Country
+    // {
+    //     [JsonPropertyName("@odata.type")]
+    //     public string odatatype { get; set; }
+    //     public string value { get; set; }
+    //     public string attributeType { get; set; }
+    // }
 
-        public class City
-    {
-        [JsonPropertyName("@odata.type")]
-        public string odatatype { get; set; }
-        public string value { get; set; }
-        public string attributeType { get; set; }
-    }
+    //     public class City
+    // {
+    //     [JsonPropertyName("@odata.type")]
+    //     public string odatatype { get; set; }
+    //     public string value { get; set; }
+    //     public string attributeType { get; set; }
+    // }
 }

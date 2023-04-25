@@ -49,19 +49,19 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         }
 
         // Check the country name in on the supported list
-        if (!CountriesList.ContainsKey(data.data.userSignUpInfo.builtInAttributes.country.value))
+        if (!CountriesList.ContainsKey(data.data.userSignUpInfo.builtInAttributes.country))
         {
             r.AddAction(ActionType.ShowValidationError);
             r.data.actions[0].message = "Please fix the following issues to proceed.";
-            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{data.data.userSignUpInfo.builtInAttributes.country.value}'"));
+            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{data.data.userSignUpInfo.builtInAttributes.country}'"));
             return r;
         }
 
         // Get the countries' cities
-        string cities = CountriesList[data.data.userSignUpInfo.builtInAttributes.country.value];
+        string cities = CountriesList[data.data.userSignUpInfo.builtInAttributes.country];
 
         // Check if the city provided by user in the supported list
-        if (!(cities + ",").ToLower().Contains($" {data.data.userSignUpInfo.builtInAttributes.city.value.ToLower()},"))
+        if (!(cities + ",").ToLower().Contains($" {data.data.userSignUpInfo.builtInAttributes.city.ToLower()},"))
         {
             r.AddAction(ActionType.ShowValidationError);
             r.data.actions[0].message = "Please fix the following issues to proceed.";
