@@ -39,9 +39,9 @@ public class OnAttributeCollectionSubmitController : ControllerBase
 
         // Check the input attributes and return a generic error message
         if (data.data.userSignUpInfo == null ||
-            data.data.userSignUpInfo.attributes == null ||
-            data.data.userSignUpInfo.attributes.country == null ||
-            data.data.userSignUpInfo.attributes.city == null)
+            data.data.userSignUpInfo.builtInAttributes == null ||
+            data.data.userSignUpInfo.builtInAttributes.country == null ||
+            data.data.userSignUpInfo.builtInAttributes.city == null)
         {
             r.AddAction(ActionType.AttributeCollectionSubmit.ShowBlockPage);
             r.data.actions[0].message = "Can't find the country and/or city attributes.";
@@ -49,19 +49,19 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         }
 
         // Check the country name in on the supported list
-        if (!CountriesList.ContainsKey(data.data.userSignUpInfo.attributes.country.value))
+        if (!CountriesList.ContainsKey(data.data.userSignUpInfo.builtInAttributes.country.value))
         {
             r.AddAction(ActionType.ShowValidationError);
             r.data.actions[0].message = "Please fix the following issues to proceed.";
-            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{data.data.userSignUpInfo.attributes.country.value}'"));
+            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{data.data.userSignUpInfo.builtInAttributes.country.value}'"));
             return r;
         }
 
         // Get the countries' cities
-        string cities = CountriesList[data.data.userSignUpInfo.attributes.country.value];
+        string cities = CountriesList[data.data.userSignUpInfo.builtInAttributes.country.value];
 
         // Check if the city provided by user in the supported list
-        if (!(cities + ",").ToLower().Contains($" {data.data.userSignUpInfo.attributes.city.value.ToLower()},"))
+        if (!(cities + ",").ToLower().Contains($" {data.data.userSignUpInfo.builtInAttributes.city.value.ToLower()},"))
         {
             r.AddAction(ActionType.ShowValidationError);
             r.data.actions[0].message = "Please fix the following issues to proceed.";

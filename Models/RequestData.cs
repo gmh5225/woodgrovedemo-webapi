@@ -81,10 +81,10 @@ namespace woodgroveapi.Models.Request
     // Sign-up classes
     public class UserSignUpInfo
     {
-        public Attributes attributes { get; set; }
+        public BuiltInAttributes builtInAttributes { get; set; }
     }
 
-    public class Attributes
+    public class BuiltInAttributes
     {
         public Country country { get; set; }
         public City city { get; set; }
