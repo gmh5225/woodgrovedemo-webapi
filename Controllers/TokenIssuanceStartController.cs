@@ -34,7 +34,7 @@ public class TokenIssuanceStartController : ControllerBase
         ResponseData r = new ResponseData(ResponseType.OnTokenIssuanceStartResponseData);
         r.AddAction(ActionType.ProvideClaimsForToken);
         r.data.actions[0].claims.CorrelationId = correlationId;
-        r.data.actions[0].claims.ApiVersion = "1.0.2";
+        r.data.actions[0].claims.ApiVersion = "1.0.3";
         
         // Loyalty program data
         Random random = new Random();
