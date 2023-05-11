@@ -69,6 +69,9 @@ namespace woodgroveapi.Models.Response
         public string LoyaltySince { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string LoyaltyTier { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string ApiVersion { get; set; }
 
         public List<string> CustomRoles { get; set; }

@@ -38,9 +38,11 @@ public class TokenIssuanceStartController : ControllerBase
         
         // Loyalty program data
         Random random = new Random();
+        string[] tiers = { "Silver", "Gold", "Platinum", "Diamond" };
         r.data.actions[0].claims.LoyaltyNumber = random.Next(123467, 999989).ToString();
         r.data.actions[0].claims.LoyaltySince = DateTime.Now.AddDays((-1) * random.Next(30, 365)).ToString("dd MMMM yyyy");
-        
+        r.data.actions[0].claims.LoyaltyTier = tiers[random.Next(0, tiers.Length - 1)];
+
         // Custom roles
         r.data.actions[0].claims.CustomRoles.Add("Writer");
         r.data.actions[0].claims.CustomRoles.Add("Editor");
