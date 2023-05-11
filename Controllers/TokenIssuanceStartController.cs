@@ -35,8 +35,13 @@ public class TokenIssuanceStartController : ControllerBase
         r.AddAction(ActionType.ProvideClaimsForToken);
         r.data.actions[0].claims.CorrelationId = correlationId;
         r.data.actions[0].claims.ApiVersion = "1.0.2";
+        
+        // Loyalty program data
         Random random = new Random();
         r.data.actions[0].claims.LoyaltyNumber = random.Next(123467, 999989).ToString();
+        r.data.actions[0].claims.LoyaltySince = DateTime.Now.AddDays((-1) * random.Next(30, 365)).ToString("dd MMMM yyyy");
+        
+        // Custom roles
         r.data.actions[0].claims.CustomRoles.Add("Writer");
         r.data.actions[0].claims.CustomRoles.Add("Editor");
         return r;
