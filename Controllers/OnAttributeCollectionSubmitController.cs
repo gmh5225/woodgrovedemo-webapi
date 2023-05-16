@@ -19,14 +19,28 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     }
 
     [HttpPost(Name = "OnAttributeCollectionSubmit")]
-    public async Task<ResponseData> PostAsync()
+    public async Task<object> PostAsync()
     {
-        _logger.LogInformation("*********** OnAttributeCollectionSubmitController ***********");
-        string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-        //_logger.LogInformation(requestBody);
+         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
+        
+        // Check whether the request contains an HTTP body
+        if (string.IsNullOrEmpty(requestBody))
+        {
+            return new { Error = "Input JSON not found." };
+        }
 
         var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
-        RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
+        RequestData data;
+
+        // Try to deserialize the input JSON
+        try
+        {
+            data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
+        }
+        catch (System.Exception)
+        {
+            return new { Error = "Invalid JSON object." };
+        }
 
         // List of countries and cities where Woodgrove operates
         Dictionary<string, string> CountriesList = new Dictionary<string, string>();
