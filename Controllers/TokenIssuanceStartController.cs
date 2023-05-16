@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models.Request;
 using woodgroveapi.Models.Response;
+using woodgroveapi.Services;
 
 namespace woodgroveapi.Controllers;
 
@@ -20,7 +21,8 @@ public class TokenIssuanceStartController : ControllerBase
     [HttpPost(Name = "TokenIssuanceStart")]
     public async Task<ResponseData> PostAsync()
     {
-        _logger.LogInformation("*********** TokenIssuanceStart ***********");
+        Debugger.PrintDebugInfo(this, _logger);
+        
         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
         //_logger.LogInformation(requestBody);
 
