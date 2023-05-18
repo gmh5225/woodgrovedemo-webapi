@@ -41,43 +41,43 @@ namespace woodgroveapi.Models
     public class User
     {
         // Display name
-        [StringLength(50, ErrorMessage = "DisplayName length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "DisplayName length can't be more than 120.")]
         public string? displayName { get; set; }
 
         // Give name
-        [StringLength(50, ErrorMessage = "GivenName length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "GivenName length can't be more than 120.")]
         public string? givenName { get; set; }
 
         // User object ID
-        [StringLength(50, ErrorMessage = "ID length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "ID length can't be more than 120.")]
         public string? id { get; set; }
 
         // Mail address
-        [StringLength(50, ErrorMessage = "Mail length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "Mail length can't be more than 120.")]
         public string? mail { get; set; }
 
         // User peferred language
-        [StringLength(50, ErrorMessage = "PeferredLanguage length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "PeferredLanguage length can't be more than 120.")]
         public string? preferredLanguage { get; set; }
 
         // Surname
-        [StringLength(50, ErrorMessage = "Surname length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "Surname length can't be more than 120.")]
         public string? surname { get; set; }
 
         // UPN
-        [StringLength(50, ErrorMessage = "Surname length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "Surname length can't be more than 120.")]
         public string? userPrincipalName { get; set; }
 
         // User type
-        [StringLength(50, ErrorMessage = "UserType length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "UserType length can't be more than 120.")]
         public string? userType { get; set; }
 
         // Country
-        [StringLength(50, ErrorMessage = "Country length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "Country length can't be more than 120.")]
         public string? country { get; set; }
 
         // City
-        [StringLength(50, ErrorMessage = "City length can't be more than 50.")]
+        [StringLength(120, ErrorMessage = "City length can't be more than 120.")]
         public string? city { get; set; }
     }
 }
