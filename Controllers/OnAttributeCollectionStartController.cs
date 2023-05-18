@@ -18,7 +18,7 @@ public class OnAttributeCollectionStartController : ControllerBase
     }
 
     [HttpPost(Name = "OnAttributeCollectionStart")]
-    public ResponseData PostAsync([FromBody] RequestData _)
+    public ResponsePayload PostAsync([FromBody] RequestPayload _)
     {
         _logger.LogInformation("*********** OnAttributeCollectionStart ***********");
 
@@ -26,7 +26,7 @@ public class OnAttributeCollectionStartController : ControllerBase
         //string correlationId = data.data.authenticationContext.correlationId; ;
 
         // Claims to return to Azure AD
-        ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionStartResponseData);
+        ResponsePayload r = new ResponsePayload(ResponseType.OnAttributeCollectionStartResponseData);
         r.AddAction(ActionType.SetPrefillValues);
         r.data.actions[0].inputs.jobTitle = "This is my test";
         return r;

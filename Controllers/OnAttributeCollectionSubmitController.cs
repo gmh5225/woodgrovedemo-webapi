@@ -18,7 +18,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     }
 
     [HttpPost(Name = "OnAttributeCollectionSubmit")]
-    public ResponseData PostAsync([FromBody] RequestData data)
+    public ResponsePayload PostAsync([FromBody] RequestPayload requestPayload)
     {
         // List of countries and cities where Woodgrove operates
         Dictionary<string, string> CountriesList = new Dictionary<string, string>();
@@ -27,13 +27,13 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         CountriesList.Add("us", " New York, Chicago, Boston, Seattle");
 
         // Message object to return to Azure AD
-        ResponseData r = new ResponseData(ResponseType.OnAttributeCollectionSubmitResponseData);
+        ResponsePayload r = new ResponsePayload(ResponseType.OnAttributeCollectionSubmitResponseData);
 
         // Check the input attributes and return a generic error message
-        if (data.data.userSignUpInfo == null ||
-            data.data.userSignUpInfo.builtInAttributes == null ||
-            data.data.userSignUpInfo.builtInAttributes.country == null ||
-            data.data.userSignUpInfo.builtInAttributes.city == null)
+        if (requestPayload.data.userSignUpInfo == null ||
+            requestPayload.data.userSignUpInfo.builtInAttributes == null ||
+            requestPayload.data.userSignUpInfo.builtInAttributes.country == null ||
+            requestPayload.data.userSignUpInfo.builtInAttributes.city == null)
         {
             r.AddAction(ActionType.ShowBlockPage);
             r.data.actions[0].message = "Can't find the country and/or city attributes.";
@@ -41,7 +41,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         }
 
         // Demonstrates the use of block response
-        if (data.data.userSignUpInfo.builtInAttributes.city.ToLower() == "block")
+        if (requestPayload.data.userSignUpInfo.builtInAttributes.city.ToLower() == "block")
         {
             r.AddAction(ActionType.ShowBlockPage);
             r.data.actions[0].message = "You can't create an account with 'block' city.";
@@ -49,19 +49,19 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         }
 
         // Check the country name in on the supported list
-        if (!CountriesList.ContainsKey(data.data.userSignUpInfo.builtInAttributes.country))
+        if (!CountriesList.ContainsKey(requestPayload.data.userSignUpInfo.builtInAttributes.country))
         {
             r.AddAction(ActionType.ShowValidationError);
             r.data.actions[0].message = "Please fix the following issues to proceed.";
-            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{data.data.userSignUpInfo.builtInAttributes.country}'"));
+            r.data.actions[0].attributeErrors.Add(new AttributeError("country", $"We don't operate in '{requestPayload.data.userSignUpInfo.builtInAttributes.country}'"));
             return r;
         }
 
         // Get the countries' cities
-        string cities = CountriesList[data.data.userSignUpInfo.builtInAttributes.country];
+        string cities = CountriesList[requestPayload.data.userSignUpInfo.builtInAttributes.country];
 
         // Check if the city provided by user in the supported list
-        if (!(cities + ",").ToLower().Contains($" {data.data.userSignUpInfo.builtInAttributes.city.ToLower()},"))
+        if (!(cities + ",").ToLower().Contains($" {requestPayload.data.userSignUpInfo.builtInAttributes.city.ToLower()},"))
         {
             r.AddAction(ActionType.ShowValidationError);
             r.data.actions[0].message = "Please fix the following issues to proceed.";

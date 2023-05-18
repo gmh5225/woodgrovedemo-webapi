@@ -20,15 +20,15 @@ public class TokenIssuanceStartController : ControllerBase
     }
 
     [HttpPost(Name = "TokenIssuanceStart")]
-    public ResponseData PostAsync([FromBody] RequestData data)
+    public ResponsePayload PostAsync([FromBody] RequestPayload requestPayload)
     {
         Debugger.PrintDebugInfo(this, _logger);
 
         // Read the correlation ID from the Azure AD  request    
-        string correlationId = data.data.authenticationContext.correlationId; ;
+        string correlationId = requestPayload.data.authenticationContext.correlationId; ;
 
         // Claims to return to Azure AD
-        ResponseData r = new ResponseData(ResponseType.OnTokenIssuanceStartResponseData);
+        ResponsePayload r = new ResponsePayload(ResponseType.OnTokenIssuanceStartResponseData);
         r.AddAction(ActionType.ProvideClaimsForToken);
         r.data.actions[0].claims.CorrelationId = correlationId;
         r.data.actions[0].claims.ApiVersion = "1.0.3";

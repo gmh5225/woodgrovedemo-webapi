@@ -3,13 +3,13 @@ using System.Text.Json.Serialization;
 namespace woodgroveapi.Models.Response
 {
 
-    public class ResponseData
+    public class ResponsePayload
     {
         [JsonPropertyName("data")]
-        public Data data { get; set; }
-        public ResponseData(string dataType)
+        public ResponseData data { get; set; }
+        public ResponsePayload(string dataType)
         {
-            data = new Data();
+            data = new ResponseData();
             data.odatatype = dataType;
         }
 
@@ -20,7 +20,7 @@ namespace woodgroveapi.Models.Response
         }
     }
 
-    public class Data
+    public class ResponseData
     {
         [JsonPropertyName("@odata.type")]
         public string odatatype { get; set; }
