@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using woodgroveapi.Models.Request;
-using woodgroveapi.Models.Response;
+using woodgroveapi.Models;
 using woodgroveapi.Services;
 
 namespace woodgroveapi.Controllers;
@@ -20,7 +19,7 @@ public class TokenIssuanceStartController : ControllerBase
     }
 
     [HttpPost(Name = "TokenIssuanceStart")]
-    public ResponsePayload PostAsync([FromBody] RequestPayload requestPayload)
+    public TokenIssuanceStartResponse PostAsync([FromBody] TokenIssuanceStartRequest requestPayload)
     {
         Debugger.PrintDebugInfo(this, _logger);
 
@@ -28,8 +27,7 @@ public class TokenIssuanceStartController : ControllerBase
         string correlationId = requestPayload.data.authenticationContext.correlationId; ;
 
         // Claims to return to Azure AD
-        ResponsePayload r = new ResponsePayload(ResponseType.OnTokenIssuanceStartResponseData);
-        r.AddAction(ActionType.ProvideClaimsForToken);
+        TokenIssuanceStartResponse r = new TokenIssuanceStartResponse();
         r.data.actions[0].claims.CorrelationId = correlationId;
         r.data.actions[0].claims.ApiVersion = "1.0.3";
 
