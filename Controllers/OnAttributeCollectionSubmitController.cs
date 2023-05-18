@@ -52,6 +52,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         {
             r.data.actions[0].odatatype = OnAttributeCollectionSubmitResponse_ActionTypes.ShowValidationError;
             r.data.actions[0].message = "Please fix the following issues to proceed.";
+            r.data.actions[0].attributeErrors = new  List<OnAttributeCollectionSubmitResponse_AttributeError>();
             r.data.actions[0].attributeErrors.Add(new OnAttributeCollectionSubmitResponse_AttributeError("country", $"We don't operate in '{requestPayload.data.userSignUpInfo.builtInAttributes.country}'"));
             return r;
         }
@@ -64,6 +65,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         {
             r.data.actions[0].odatatype = OnAttributeCollectionSubmitResponse_ActionTypes.ShowValidationError;
             r.data.actions[0].message = "Please fix the following issues to proceed.";
+            r.data.actions[0].attributeErrors = new  List<OnAttributeCollectionSubmitResponse_AttributeError>();
             r.data.actions[0].attributeErrors.Add(new OnAttributeCollectionSubmitResponse_AttributeError("city", $"We don't operate in this city. Please select one of the following:{cities}"));
         }
         else
