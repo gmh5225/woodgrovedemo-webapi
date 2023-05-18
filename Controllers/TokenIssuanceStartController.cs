@@ -7,7 +7,7 @@ using woodgroveapi.Services;
 namespace woodgroveapi.Controllers;
 
 
-[Authorize]
+//[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class TokenIssuanceStartController : ControllerBase
