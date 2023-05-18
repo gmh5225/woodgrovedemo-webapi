@@ -1,5 +1,3 @@
-using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models.Request;
@@ -21,32 +19,10 @@ public class TokenIssuanceStartController : ControllerBase
         _logger = logger;
     }
 
-    
     [HttpPost(Name = "TokenIssuanceStart")]
-    public async Task<object> PostAsync()
+    public ResponseData PostAsync([FromBody] RequestData data)
     {
         Debugger.PrintDebugInfo(this, _logger);
-
-        string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-
-        // Check whether the request contains an HTTP body
-        if (string.IsNullOrEmpty(requestBody))
-        {
-            return new { Error = "Input JSON not found." };
-        }
-
-        var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
-        RequestData data;
-
-        // Try to deserialize the input JSON
-        try
-        {
-            data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
-        }
-        catch (System.Exception)
-        {
-            return new { Error = "Invalid JSON object." };
-        }
 
         // Read the correlation ID from the Azure AD  request    
         string correlationId = data.data.authenticationContext.correlationId; ;
