@@ -1,12 +1,11 @@
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models.Request;
 using woodgroveapi.Models.Response;
 
 namespace woodgroveapi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class OnAttributeCollectionStartController : ControllerBase
@@ -19,14 +18,9 @@ public class OnAttributeCollectionStartController : ControllerBase
     }
 
     [HttpPost(Name = "OnAttributeCollectionStart")]
-    public async Task<ResponseData> PostAsync()
+    public ResponseData PostAsync([FromBody] RequestData _)
     {
         _logger.LogInformation("*********** OnAttributeCollectionStart ***********");
-        string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-        //_logger.LogInformation(requestBody);
-
-        var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
-        RequestData data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
 
         // Read the correlation ID from the Azure AD  request    
         //string correlationId = data.data.authenticationContext.correlationId; ;
