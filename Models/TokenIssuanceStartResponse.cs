@@ -10,7 +10,7 @@ namespace woodgroveapi.Models
         public TokenIssuanceStartResponse()
         {
             data = new TokenIssuanceStartResponse_Data();
-            data.odatatype = "microsoft.graph.onTokenIssuanceStartResponse_Data";
+            data.odatatype = "microsoft.graph.onTokenIssuanceStartResponseData";
 
             this.data.actions = new List<TokenIssuanceStartResponse_Action>();
             this.data.actions.Add(new TokenIssuanceStartResponse_Action());
