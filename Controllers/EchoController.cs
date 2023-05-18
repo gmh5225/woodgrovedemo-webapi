@@ -27,7 +27,7 @@ public class EchoController : ControllerBase
 
         _logger.LogInformation( $"#### {requestBody}");
 
-        return null;
+        return "Echo";
     }
 }
 
