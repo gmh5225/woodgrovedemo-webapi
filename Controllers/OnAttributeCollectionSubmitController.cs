@@ -1,12 +1,11 @@
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models.Request;
 using woodgroveapi.Models.Response;
 
 namespace woodgroveapi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class OnAttributeCollectionSubmitController : ControllerBase
@@ -19,29 +18,8 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     }
 
     [HttpPost(Name = "OnAttributeCollectionSubmit")]
-    public async Task<object> PostAsync()
+    public ResponseData PostAsync([FromBody] RequestData data)
     {
-         string requestBody = await new StreamReader(this.Request.Body).ReadToEndAsync();
-        
-        // Check whether the request contains an HTTP body
-        if (string.IsNullOrEmpty(requestBody))
-        {
-            return new { Error = "Input JSON not found." };
-        }
-
-        var stream = new MemoryStream(Encoding.UTF8.GetBytes(requestBody));
-        RequestData data;
-
-        // Try to deserialize the input JSON
-        try
-        {
-            data = await JsonSerializer.DeserializeAsync<RequestData>(stream);
-        }
-        catch (System.Exception)
-        {
-            return new { Error = "Invalid JSON object." };
-        }
-
         // List of countries and cities where Woodgrove operates
         Dictionary<string, string> CountriesList = new Dictionary<string, string>();
         CountriesList.Add("au", " Sydney, Brisbane, Melbourne");
