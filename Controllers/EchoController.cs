@@ -18,7 +18,7 @@ public class EchoController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost(Name = "TokenIssuanceStart")]
+    [HttpPost(Name = "Echo")]
     public async Task<object> PostAsync()
     {
         Debugger.PrintDebugInfo(this, _logger);
