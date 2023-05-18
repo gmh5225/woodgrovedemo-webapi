@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models;
-using woodgroveapi.Services;
 
 namespace woodgroveapi.Controllers;
 
@@ -21,8 +20,6 @@ public class TokenIssuanceStartController : ControllerBase
     [HttpPost(Name = "TokenIssuanceStart")]
     public TokenIssuanceStartResponse PostAsync([FromBody] TokenIssuanceStartRequest requestPayload)
     {
-        Debugger.PrintDebugInfo(this, _logger);
-
         // Read the correlation ID from the Azure AD  request    
         string correlationId = requestPayload.data.authenticationContext.correlationId; ;
 

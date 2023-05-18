@@ -34,7 +34,7 @@ namespace woodgroveapi.Models
 
         public TokenIssuanceStartResponse_Action()
         {
-            odatatype = "microsoft.graph.provideClaimsForToken";
+            odatatype = "microsoft.graph.tokenIssuanceStart.provideClaimsForToken";
             claims = new TokenIssuanceStartResponse_Claims();
         }
     }
