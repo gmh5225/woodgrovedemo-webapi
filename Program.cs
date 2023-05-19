@@ -35,7 +35,7 @@ string policyName = "VerifyCallerIsCiamSts";
 builder.Services.AddAuthorization(options => {
     options.AddPolicy(policyName, builder =>
     {
-        // See https://learn.microsoft.com/azure/active-directory/develop/custom-extension-overview#protect-your-rest-api
+        // For more information, https://learn.microsoft.com/azure/active-directory/develop/custom-extension-overview#protect-your-rest-api
         builder.RequireClaim("azp", "99045fe1-7639-4a75-9d4a-577b6ca3810f");
     });
     options.DefaultPolicy = options.GetPolicy(policyName)!;

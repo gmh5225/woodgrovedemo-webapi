@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models;
@@ -19,6 +20,13 @@ public class OnAttributeCollectionSubmitController : ControllerBase
     [HttpPost(Name = "OnAttributeCollectionSubmit")]
     public OnAttributeCollectionSubmitResponse PostAsync([FromBody] OnAttributeCollectionSubmitRequest requestPayload)
     {
+        // For Azure App Service with Easy Auth, validate the azp claim value
+        // if (!AzureAppServiceClaimsHeader.Authorize(this.Request))
+        // {
+        //     Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        //     return null;
+        // }
+
         // List of countries and cities where Woodgrove operates
         Dictionary<string, string> CountriesList = new Dictionary<string, string>();
         CountriesList.Add("au", " Sydney, Brisbane, Melbourne");
@@ -52,7 +60,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         {
             r.data.actions[0].odatatype = OnAttributeCollectionSubmitResponse_ActionTypes.ShowValidationError;
             r.data.actions[0].message = "Please fix the following issues to proceed.";
-            r.data.actions[0].attributeErrors = new  List<OnAttributeCollectionSubmitResponse_AttributeError>();
+            r.data.actions[0].attributeErrors = new List<OnAttributeCollectionSubmitResponse_AttributeError>();
             r.data.actions[0].attributeErrors.Add(new OnAttributeCollectionSubmitResponse_AttributeError("country", $"We don't operate in '{requestPayload.data.userSignUpInfo.builtInAttributes.country}'"));
             return r;
         }
@@ -65,7 +73,7 @@ public class OnAttributeCollectionSubmitController : ControllerBase
         {
             r.data.actions[0].odatatype = OnAttributeCollectionSubmitResponse_ActionTypes.ShowValidationError;
             r.data.actions[0].message = "Please fix the following issues to proceed.";
-            r.data.actions[0].attributeErrors = new  List<OnAttributeCollectionSubmitResponse_AttributeError>();
+            r.data.actions[0].attributeErrors = new List<OnAttributeCollectionSubmitResponse_AttributeError>();
             r.data.actions[0].attributeErrors.Add(new OnAttributeCollectionSubmitResponse_AttributeError("city", $"We don't operate in this city. Please select one of the following:{cities}"));
         }
         else

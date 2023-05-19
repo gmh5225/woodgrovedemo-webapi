@@ -1,3 +1,4 @@
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using woodgroveapi.Models;
@@ -20,6 +21,14 @@ public class TokenIssuanceStartController : ControllerBase
     [HttpPost(Name = "TokenIssuanceStart")]
     public TokenIssuanceStartResponse PostAsync([FromBody] TokenIssuanceStartRequest requestPayload)
     {
+
+        // For Azure App Service with Easy Auth, validate the azp claim value
+        // if (!AzureAppServiceClaimsHeader.Authorize(this.Request))
+        // {
+        //     Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        //     return null;
+        // }
+
         // Read the correlation ID from the Azure AD  request    
         string correlationId = requestPayload.data.authenticationContext.correlationId; ;
 
