@@ -21,7 +21,7 @@ builder.Logging.AddFilter((provider, category, logLevel) =>
 // Disable the default claims mapping.
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
-// Add services to the container.
+// Add the authentication services.
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
@@ -30,7 +30,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Verifies that the caller of the Web API is always the CIAM STS.
+// Verifies that the caller of the Web API is always the Microsoft Entra External ID.
 string policyName = "VerifyCallerIsCiamSts";
 builder.Services.AddAuthorization(options => {
     options.AddPolicy(policyName, builder =>

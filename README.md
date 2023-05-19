@@ -48,7 +48,11 @@ POST https://api.wggdemo.net/OnAttributeCollectionSubmit
 
 To ensure the communications between Microsoft Entra custom extension and your REST API are secured appropriately, Microsoft Entra External ID uses OAuth 2.0 client credentials grant flow to issue an access token for the resource application registered with your custom authentication extension. 
 
-When the custom extension calls your REST API, it sends an HTTP Authorization header with a bearer token issued by Azure AD. You REST API validate the access token and its claims values. This example uses the [Microsoft.Identity.Web](https://www.nuget.org/packages/Microsoft.Identity.Web) library to validate the access token. 
+When the custom extension calls your REST API, it sends an HTTP Authorization header with a bearer token issued by Azure AD. You REST API validate the access token and its claims values. 
+
+### [Option 1] Validate the access token in your code
+
+This example uses the [Microsoft.Identity.Web](https://www.nuget.org/packages/Microsoft.Identity.Web) library to validate the access token.
 
 In the [appsettings.json](./appsettings.json) file, update the following keys under the `AzureAd` element:
 
@@ -67,6 +71,67 @@ public class TokenIssuanceStartController : ControllerBase
     // Rest of your code
 }
 ```
+
+### [Option 2] Validate the access token via Azure Service App
+
+[Azure App Service](https://learn.microsoft.com/azure/app-service/) enables you to build and host web apps and and RESTful APIs in the programming language of your choice without managing infrastructure.
+
+Azure App Service provides built-in [authentication and authorization capabilities](https://learn.microsoft.com/azure/app-service/overview-authentication-authorization) (sometimes referred to as "Easy Auth"), so you can validate the access token sends by Microsoft Entra External ID by writing minimal code in RESTful API.
+
+To enable add authentication into your App Service app, follow these steps:
+
+1. Sign in to the [Azure portal](https://portal.azure.com/) and navigate to your app.
+1. From the left navigation, select **Authentication** > **Add identity provider** > **Microsoft**.
+1. For **App registration type**, choose **Provide the details of an existing app registration** 
+1. Fill in the following configuration details:
+
+    |Field|Description|
+    |-|-|
+    |Application (client) ID| The application ID that is associated with your custom extension. You can find this application under the API authentication in your custom extension. |
+    |Client Secret| Enter any value, such as 12345. |
+    |Issuer Url| Use `https://login.microsoftonline.com/<tenant-id>/v2.0`, and replace the *\<tenant-id>* with the **Directory (tenant) ID** in which the app registration was created. |
+    |Allowed Token Audiences| Use the same value as the *Application (client) ID*. |
+    
+1. For the **Restrict access**, select **Require authentication**.
+1. For the **Unauthenticated requests**, select **HTTP 401 Unauthorized: recommended for APIs**.
+1. Unselect the **Token store** option.
+1. Select **Add**.
+
+You're now ready to use the Microsoft identity platform for authentication in your app. The App Service makes the claims in the incoming token available to your code by injecting them into the `X-MS-CLIENT-PRINCIPAL` request header (Base64 encoded JSON representation of available claims). 
+
+To ensure the communications between the custom extension and your REST API are [secured appropriately](https://learn.microsoft.com/azure/active-directory/develop/custom-extension-overview#protect-your-rest-api), validate that the respective `azp` claim contains the `99045fe1-7639-4a75-9d4a-577b6ca3810f` value.
+
+In your REST API use the code in the [AzureAppServiceClaims class](./Models/AzureAppServiceClaims.cs). Then, in the controller call the `Authorize` function that checks the `azp` claim value.
+
+```csharp
+if (!AzureAppServiceClaimsHeader.Authorize(this.Request))
+{
+    Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+    return null;
+}
+```
+
+### [Option 3] Validate the access token via Azure APIM
+
+[Azure API Management](https://learn.microsoft.com/azure/api-management/api-management-key-concepts) offers a scalable, multi-cloud API management platform for securing, publishing, and analyzing APIs. The [validate-azure-ad-token](https://learn.microsoft.com/azure/api-management/validate-azure-ad-token-policy) policy enforces the existence and validity of a JSON web token (JWT) that was provided by the Microsoft Entra External ID.
+
+The following example policy, when added to the `<inbound>` policy section, checks the value of the `audience` and the `azp` claims in an access token obtained from Microsoft Entra External ID that is presented in the `Authorization` header. It returns an error message if the token is not valid. Configure this policy at a policy scope that it protects all custom authentication extensions REST API endpoints.
+
+```xml
+<validate-azure-ad-token tenant-id="your-tenant-ID" header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+  <client-application-ids>
+     <application-id>99045fe1-7639-4a75-9d4a-577b6ca3810f</application-id>
+  </client-application-ids>
+  <audiences>
+     <audience>Your application ID</audience>
+  </audiences>
+</validate-azure-ad-token>
+``` 
+
+Use the following values:
+
+- **tenant-id** your Microsoft Entra External ID tenant ID.
+- **Audience** the application ID that is associated with your custom extension. You can find this application under the API authentication in your custom extension.
 
 
 ## Data models
